@@ -1,0 +1,36 @@
+POLICY ID: SAV-001
+TITLE: Member Savings Policy
+
+1. SAVINGS INFORMATION
+
+Savings information used during loan case preparation
+must come from an approved member record.
+
+RULE ID: SAV-001-RECORD
+
+
+2. SAVINGS BALANCE
+
+A member's savings balance may be considered when preparing
+a loan case.
+
+However, the savings balance alone must never be interpreted
+as automatic qualification for a loan.
+
+RULE ID: SAV-001-BALANCE
+
+
+3. MONTHLY SAVINGS
+
+The member's regular monthly savings may be included in the
+financial information presented to the human reviewer.
+
+RULE ID: SAV-001-MONTHLY
+
+
+4. DECISION AUTHORITY
+
+Savings information may support case preparation but the
+final financial decision remains with authorized SACCO staff.
+
+RULE ID: SAV-001-AUTHORITY

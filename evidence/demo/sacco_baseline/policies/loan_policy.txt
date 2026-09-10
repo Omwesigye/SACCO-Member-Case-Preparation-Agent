@@ -1,0 +1,54 @@
+POLICY ID: LOAN-001
+TITLE: Development Loan Policy
+
+1. MEMBERSHIP REQUIREMENT
+
+A member applying for a Development Loan must have maintained
+active SACCO membership for at least six months.
+
+RULE ID: LOAN-001-MEMBERSHIP
+
+
+2. KYC REQUIREMENT
+
+A member applying for a loan must have completed the SACCO's
+Know Your Customer verification requirements.
+
+RULE ID: LOAN-001-KYC
+
+
+3. ARREARS
+
+A member with outstanding loan arrears requires additional
+human review before another loan application can proceed.
+
+RULE ID: LOAN-001-ARREARS
+
+
+4. REPAYMENT TERM
+
+Development Loans may have a repayment period between
+6 months and 24 months.
+
+RULE ID: LOAN-001-TERM
+
+
+5. GUARANTORS
+
+Development Loan applications require guarantor information.
+
+The appropriate number and suitability of guarantors must
+be confirmed by an authorized SACCO officer.
+
+RULE ID: LOAN-001-GUARANTOR
+
+
+6. LOAN APPROVAL
+
+Final loan approval or rejection may only be performed
+by authorized SACCO personnel or the Credit Committee.
+
+An automated system or AI assistant must not approve,
+reject, or disburse a loan.
+
+RULE ID: LOAN-001-APPROVAL
