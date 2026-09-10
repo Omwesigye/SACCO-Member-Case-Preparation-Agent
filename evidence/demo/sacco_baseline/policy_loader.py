@@ -1,7 +1,7 @@
-import os
+from pathlib import Path
 
 
-POLICY_FOLDER = "policies"
+POLICY_FOLDER = Path(__file__).parent / "policies"
 
 
 def load_policy(filename):
@@ -9,7 +9,7 @@ def load_policy(filename):
     Load one SACCO policy file.
     """
 
-    path = os.path.join(POLICY_FOLDER, filename)
+    path = POLICY_FOLDER / filename
 
     with open(path, "r", encoding="utf-8") as file:
         return file.read()
