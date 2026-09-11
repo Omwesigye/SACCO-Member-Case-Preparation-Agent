@@ -1,6 +1,6 @@
 System Architecture
  
-
+https://github.com/Omwesigye/SACCO-Member-Case-Preparation-Agent/blob/f3305d9ed34e756b03e28bea5fa081190edbcc5d/Architecture.png
 
 The SACCO Member Case Preparation Agent is an Agentic AI component designed to support the Loans Department by assisting loan officers in preparing and understanding member loan cases. The agent does not make credit decisions or perform financial transactions. Instead it acts as an intelligent assistant that retrieves relevant SACCO policies, analyzes authorized member case information, performs illustrative calculations and prepares a structured case for review by human staff.
 The architecture consists of the following main components:
