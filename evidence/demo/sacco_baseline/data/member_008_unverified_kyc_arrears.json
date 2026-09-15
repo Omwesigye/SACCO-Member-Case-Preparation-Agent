@@ -1,0 +1,17 @@
+{
+  "member_id": "SACCO-M-008",
+  "full_name": "Synthetic Member Eight",
+  "membership_months": 10,
+  "monthly_income": 1300000,
+  "monthly_savings": 220000,
+  "savings_balance": 1800000,
+  "existing_monthly_obligations": 300000,
+  "requested_loan": 3500000,
+  "requested_term_months": 18,
+  "annual_interest_rate": 18,
+  "loan_product": "Development Loan",
+  "kyc_status": "missing",
+  "has_arrears": true,
+  "number_of_guarantors": 2,
+  "data_type": "synthetic"
+}
