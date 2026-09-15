@@ -1,0 +1,17 @@
+{
+  "member_id": "SACCO-M-004",
+  "full_name": "Synthetic Member Four",
+  "membership_months": 20,
+  "monthly_income": 1000000,
+  "monthly_savings": 150000,
+  "savings_balance": 2000000,
+  "existing_monthly_obligations": 200000,
+  "requested_loan": 3000000,
+  "requested_term_months": 12,
+  "annual_interest_rate": 18,
+  "loan_product": "Development Loan",
+  "kyc_status": "verified",
+  "has_arrears": true,
+  "number_of_guarantors": 2,
+  "data_type": "synthetic"
+}
