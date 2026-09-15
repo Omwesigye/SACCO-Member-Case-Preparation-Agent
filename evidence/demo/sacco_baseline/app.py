@@ -85,6 +85,13 @@ member_file = st.sidebar.selectbox(
         "member_001.json",
         "member_002_missing_kyc.json",
         "member_003_invalid_term.json"
+         "member_004_arrears.json",
+        "member_005_new_member.json",
+        "member_006_short_term.json",
+        "member_007_high_debt.json",
+        "member_008_unverified_kyc_arrears.json",
+        "member_009_zero_guarantors.json",
+        "member_010_perfect_profile.json"
     ]
 )
 
