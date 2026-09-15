@@ -1,3 +1,6 @@
+RAG ARCHITECTURE
+![images alter](https://github.com/Omwesigye/SACCO-Member-Case-Preparation-Agent/blob/main/Screenshot%20from%202026-09-15%2012-32-19.png)
+
 RAG Architecture Description
 The SACCO Member-Case Preparation Agent will use a Retrieval-Augmented Generation (RAG) architecture to provide responses based on a controlled and traceable knowledge source. The purpose of the RAG architecture is to reduce the reliance on the foundation model's pretrained knowledge by retrieving relevant information from approved SACCO policy documents and procedures before generating a response.
 1. Controlled Knowledge Corpus
