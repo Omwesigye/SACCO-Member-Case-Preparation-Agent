@@ -15,19 +15,29 @@ def get_client():
     Create and return a Gemini API client.
     """
 
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = (
+        os.getenv("GEMINI_API_KEY")
+        or os.getenv("GOOGLE_API_KEY")
+    )
 
     if not api_key:
         try:
-            api_key = st.secrets.get("GEMINI_API_KEY")
+            api_key = (
+                st.secrets.get("GEMINI_API_KEY")
+                or st.secrets.get("GOOGLE_API_KEY")
+            )
         except Exception:
             api_key = None
 
     if not api_key:
         raise ValueError(
             "GEMINI_API_KEY was not found. "
-            "Add it to Streamlit Secrets or your .env file."
+            "Add it to Streamlit Secrets or your .env file. "
+            "The app also accepts GOOGLE_API_KEY as an alias."
         )
+
+    if not os.getenv("GEMINI_API_KEY") and os.getenv("GOOGLE_API_KEY"):
+        os.environ["GEMINI_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
     return genai.Client(api_key=api_key)
 
