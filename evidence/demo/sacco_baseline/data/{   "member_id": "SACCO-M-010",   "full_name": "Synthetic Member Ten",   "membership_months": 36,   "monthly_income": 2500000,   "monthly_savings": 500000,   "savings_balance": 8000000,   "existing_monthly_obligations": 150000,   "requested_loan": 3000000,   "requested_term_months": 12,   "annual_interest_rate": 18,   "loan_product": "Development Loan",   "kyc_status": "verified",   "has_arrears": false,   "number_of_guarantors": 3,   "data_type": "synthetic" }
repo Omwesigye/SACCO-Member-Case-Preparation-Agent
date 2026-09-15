@@ -1,0 +1,17 @@
+{
+  "member_id": "SACCO-M-010",
+  "full_name": "Synthetic Member Ten",
+  "membership_months": 36,
+  "monthly_income": 2500000,
+  "monthly_savings": 500000,
+  "savings_balance": 8000000,
+  "existing_monthly_obligations": 150000,
+  "requested_loan": 3000000,
+  "requested_term_months": 12,
+  "annual_interest_rate": 18,
+  "loan_product": "Development Loan",
+  "kyc_status": "verified",
+  "has_arrears": false,
+  "number_of_guarantors": 3,
+  "data_type": "synthetic"
+}
