@@ -71,11 +71,12 @@ class PolicyRetriever:
         self,
         query: str,
         top_k: int = 4,
-        min_score: float = 0.05
+        min_score: float = 0.04
     ) -> List[RetrievedEvidence]:
         """
         Retrieves top-k most relevant policy evidence chunks for a query.
-        Discards chunks below min_score to avoid retrieving noise.
+        Combines TF-IDF cosine similarity with keyword coverage weighting
+        to suppress false positives from single common words.
         """
         if not self.chunks or self.vectorizer is None or self.tfidf_matrix is None:
             return []
@@ -83,6 +84,15 @@ class PolicyRetriever:
         clean_query = query.strip()
         if not clean_query:
             return []
+
+        # Extract alphanumeric query terms excluding stop words
+        import re
+        from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+
+        tokens = [
+            w.lower() for w in re.findall(r"\b\w+\b", clean_query)
+            if w.lower() not in ENGLISH_STOP_WORDS and len(w) > 2
+        ]
 
         query_vec = self.vectorizer.transform([clean_query])
         similarities = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
@@ -92,13 +102,33 @@ class PolicyRetriever:
 
         results: List[RetrievedEvidence] = []
         for idx in ranked_indices:
-            score = float(similarities[idx])
-            if score < min_score:
+            raw_sim = float(similarities[idx])
+            if raw_sim < 0.01:
                 break
+
+            chunk_text = self.chunks[idx].searchable_text.lower()
+            if tokens:
+                matched_tokens = sum(1 for t in tokens if t in chunk_text)
+                coverage = matched_tokens / len(tokens)
+            else:
+                matched_tokens = 0
+                coverage = 1.0
+
+            # Suppress when query has multiple keywords but barely any matched in corpus
+            if len(tokens) >= 3 and matched_tokens < 2:
+                final_score = raw_sim * 0.2
+            elif tokens:
+                final_score = raw_sim * (0.5 + 0.5 * coverage)
+            else:
+                final_score = raw_sim
+
+            if final_score < min_score:
+                continue
+
             results.append(
                 RetrievedEvidence(
                     chunk=self.chunks[idx],
-                    score=round(score, 4)
+                    score=round(final_score, 4)
                 )
             )
             if len(results) >= top_k:

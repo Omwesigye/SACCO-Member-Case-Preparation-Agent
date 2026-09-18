@@ -193,7 +193,7 @@ Prepared for human staff review only. The AI assistant does not make credit deci
         """
         evidence = self.retrieve_evidence_for_query(question, top_k=top_k)
 
-        if not evidence or evidence[0].score < 0.10:
+        if not evidence or evidence[0].score < 0.045:
             return {
                 "answer": (
                     "**INSUFFICIENT EVIDENCE:** The SACCO knowledge base does not contain "
