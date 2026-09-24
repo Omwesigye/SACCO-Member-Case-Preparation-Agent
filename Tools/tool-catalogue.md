@@ -1,6 +1,5 @@
 # Tool Catalogue — SACCO Member-Case Preparation Agent
 
-
 This document defines the tools/functions the AI agent is permitted to call. Each tool has a strict input/output schema, authorization rules, and defined failure behaviour, so the AI can only act within clearly bounded, auditable limits.
 
 ---
@@ -56,44 +55,70 @@ Retrieves a synthetic SACCO member's profile data (membership duration, KYC stat
 
 ---
 
-## Tool 2: create_case_pack_draft
+## Tool 2: run_financial_calculation
 
 **Purpose**
-Performs a low-risk simulated side effect: assembles retrieved member data, policy evidence, and the deterministic repayment calculation into a draft case pack record, logged as "pending human review." Does not approve, reject, or disburse anything.
+Performs all deterministic financial calculations needed during case preparation — repayment schedules, Debt Service Ratio (DSR), savings-based loan limits, and security/guarantor coverage — using fixed formulas only. The AI selects which calculation to run and supplies the required inputs, but never performs the arithmetic itself. This keeps every number in a case brief exact, reproducible, and auditable.
 
 **Input Schema**
 ```json
 {
-  "member_id": { "type": "string", "required": true },
-  "policy_evidence": { "type": "array", "required": true },
-  "repayment_schedule": { "type": "object", "required": true },
-  "policy_check_results": { "type": "array", "required": true }
+  "calculation_type": {
+    "type": "enum",
+    "required": true,
+    "options": ["repayment_schedule", "debt_service_ratio", "savings_loan_limit", "security_coverage"],
+    "description": "Which calculation to perform"
+  },
+  "inputs": {
+    "type": "object",
+    "required": true,
+    "description": "Fields required vary by calculation_type"
+  }
 }
 ```
+
+**Inputs required per calculation_type:**
+
+| calculation_type | Required inputs |
+|---|---|
+| repayment_schedule | principal, annual_interest_rate, term_months |
+| debt_service_ratio | net_monthly_income, existing_monthly_obligations, proposed_monthly_installment |
+| savings_loan_limit | savings_balance, multiplier_rate |
+| security_coverage | loan_principal, total_pledged_security |
 
 **Output Schema**
 ```json
 {
-  "case_pack_id": "string",
-  "status": "enum [DRAFT_READY_FOR_HUMAN_REVIEW, DRAFT_INCOMPLETE]",
-  "created_at": "timestamp",
-  "requires_human_review": "boolean (always true)",
-  "confirmation_message": "string"
+  "calculation_type": "string (echoes the request)",
+  "result": "object — fields depend on calculation_type, see below",
+  "is_illustrative": "boolean (always true)",
+  "calculation_successful": "boolean"
 }
 ```
 
+**Result fields per calculation_type:**
+
+| calculation_type | Result fields |
+|---|---|
+| repayment_schedule | monthly_payment, total_interest, total_repayment |
+| debt_service_ratio | dsr_percentage, within_policy_limit (true if ≤50%) |
+| savings_loan_limit | max_eligible_loan_amount |
+| security_coverage | coverage_percentage, meets_minimum_coverage (true if ≥100%) |
+
 **Authorization Rules**
-- May only be called after both `retrieve_member_record` and the deterministic calculator have successfully returned data for the same `member_id`.
-- The output status can never be set to "approved," "rejected," or "disbursed" — those values do not exist in this tool's schema, so it is structurally incapable of making a lending decision.
-- This is a simulated side effect only: writes to a local draft log/file, not any real SACCO system of record.
+- Callable only by the AI agent within an active case-preparation workflow.
+- Purely computational — no access to member records, no write access, no connection to any live financial system.
+- The tool cannot output words like "approved," "offer," "qualifies," or "final" in any result — only numeric/boolean outputs. It states facts, never a verdict.
 
 **Validation Requirements**
-- All four input fields must be present and non-empty; if `policy_check_results` is missing any rule's outcome, the draft is marked `DRAFT_INCOMPLETE`.
-- `repayment_schedule` must match the deterministic calculator's output format — figures that don't match the expected schema are rejected.
+- `calculation_type` must be one of the four allowed values.
+- All inputs required for that specific calculation_type must be present and numeric.
+- Numeric inputs must be positive where applicable (e.g., principal > 0, term_months > 0).
 
 **Failure Behaviour**
-- Missing required input → `{"status": "DRAFT_INCOMPLETE", "error": "missing_required_field: <field_name>"}`
-- Repayment schedule fails schema validation → `{"error": "invalid_calculator_output"}`
-- Unauthorized/out-of-sequence call → `{"error": "sequence_violation: member record and repayment schedule required first"}`
+- Unknown calculation_type → `{"calculation_successful": false, "error": "unsupported_calculation_type"}`
+- Missing/non-numeric required input → `{"calculation_successful": false, "error": "missing_or_invalid_field: <field_name>"}` — the AI must not estimate the figure itself.
+- Invalid value (e.g., principal ≤ 0) → `{"calculation_successful": false, "error": "invalid_input_value: <field_name>"}`
+- term_months outside the policy range (6–24 months) for repayment_schedule → still calculates and returns figures, but adds `"policy_range_warning": "term_exceeds_or_below_policy_limit"`
+- Unexpected internal error → `{"calculation_successful": false, "error": "calculation_error"}` — agent must halt and report the fault, never substitute a guessed number.
 
----
