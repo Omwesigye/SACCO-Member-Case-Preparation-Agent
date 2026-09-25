@@ -26,7 +26,7 @@ Examples include:
 These actions are outside the normal authority of the Member-Case Preparation Agent.
 4. Approval Workflow
 When the agent encounters an action requiring approval, the request follows this process:
-[images alt](https://github.com/Omwesigye/SACCO-Member-Case-Preparation-Agent/blob/f927abe0d7ea0ff5585f2072a2f6779b40481076/Screenshot%20from%202026-09-24%2013-37-19.png)
+![images alt](https://github.com/Omwesigye/SACCO-Member-Case-Preparation-Agent/blob/f927abe0d7ea0ff5585f2072a2f6779b40481076/Screenshot%20from%202026-09-24%2013-37-19.png)
  
 6. Approval Request
 An approval request should contain enough information for the human reviewer to understand what is being requested.
