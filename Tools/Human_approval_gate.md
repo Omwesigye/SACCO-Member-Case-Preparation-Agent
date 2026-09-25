@@ -26,8 +26,9 @@ Examples include:
 These actions are outside the normal authority of the Member-Case Preparation Agent.
 4. Approval Workflow
 When the agent encounters an action requiring approval, the request follows this process:
+[images alt](https://github.com/Omwesigye/SACCO-Member-Case-Preparation-Agent/blob/f927abe0d7ea0ff5585f2072a2f6779b40481076/Screenshot%20from%202026-09-24%2013-37-19.png)
  
-5. Approval Request
+6. Approval Request
 An approval request should contain enough information for the human reviewer to understand what is being requested.
 Example:
 {
@@ -40,7 +41,7 @@ Example:
   "status": "PENDING_APPROVAL"
 }
 The system should not execute the requested action while the request has a PENDING_APPROVAL status.
-6. Approval Decision
+7. Approval Decision
 The authorized staff member can make one of the following decisions:
 APPROVED
 REJECTED
@@ -59,7 +60,7 @@ For example:
   "decisionTime": "2026-09-24T10:30:00",
   "comment": "Reviewed and approved for processing."
 }
-7. Rejected Approval
+8. Rejected Approval
 If the human reviewer rejects the request, the action must not be executed.
 Example:
 Agent
@@ -77,7 +78,7 @@ Action blocked
 Agent receives rejection status
 The agent may then inform the Loan Officer that the requested action was not approved.
 The agent must not attempt to bypass the rejection by making the same request through another tool.
-8. Authorization of the Approver
+9. Authorization of the Approver
 The Human Approval Gate must also verify that the person approving an action has the required authority.
 For example:
 User submits approval
@@ -94,7 +95,7 @@ Approve / Reject
 A normal agent user must not be able to approve an action simply by sending a message such as:
 "I approve this loan."
 The application must verify the user's authenticated identity and authorization independently of the language model.
-9. Preventing Agent Self-Approval
+10. Preventing Agent Self-Approval
 A critical security rule is that the AI agent must never be able to approve its own action.
 The following flow is prohibited:
 Agent
@@ -119,7 +120,7 @@ Application validates approval
   ↓
 Action may proceed
 This ensures that the approval is an independent human decision.
-10. Failure Handling
+11. Failure Handling
 The Human Approval Gate must also handle failures safely.
 Scenario	Expected Behaviour
 No approver available	Keep request pending
