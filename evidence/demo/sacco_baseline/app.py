@@ -8,7 +8,12 @@ from calculator import (
     generate_schedule
 )
 
-from policy_loader import load_all_policies
+from policy_loader import (
+    load_all_policies,
+    get_rag_pipeline,
+    retrieve_case_evidence,
+    retrieve_query_evidence
+)
 
 from prompts import build_case_prompt
 
@@ -175,20 +180,48 @@ with st.expander(
 
 
 # ---------------------------------------------------------
-# POLICY SECTION
+# POLICY SECTION (GROUNDED RAG RETRIEVAL)
 # ---------------------------------------------------------
 
 st.header(
-    "2. Approved SACCO Policies"
+    "2. Grounded SACCO Policy Retrieval (RAG)"
 )
 
-policies = load_all_policies()
+rag_pipeline = get_rag_pipeline()
+st.caption(
+    f"Connected to Controlled Knowledge Corpus ({len(rag_pipeline.retriever.chunks)} policy chunks indexed across 20 approved documents)."
+)
 
-with st.expander(
-    "View policies supplied to the AI"
-):
+# Retrieve case-tailored policy evidence for the selected member
+case_evidence = retrieve_case_evidence(member=member, repayment={}, max_chunks=4)
 
-    st.text(policies)
+tab1, tab2 = st.tabs(["Case-Tailored Policy Evidence", "Interactive Policy Query"])
+
+with tab1:
+    st.write(f"Relevant policy evidence retrieved for **Member {member['member_id']}**:")
+    for ev in case_evidence:
+        c = ev.chunk
+        with st.expander(f"📌 [{ev.relevance_tier}] {c.source_id} — {c.document_title} | {c.section_heading} (Score: {ev.score:.3f})"):
+            st.markdown(f"**Document:** {c.document_title} ({c.version}) | **Effective:** {c.effective_date}")
+            st.markdown(f"**Section:** {c.section_heading}")
+            st.markdown(f"**Citation:** `{ev.citation}`")
+            st.text(c.content)
+
+with tab2:
+    st.subheader("Query SACCO Policy Knowledge Base")
+    user_query = st.text_input(
+        "Enter a policy question:",
+        placeholder="e.g. What are the requirements for Level 2 KYC or guarantor limits?"
+    )
+    if user_query:
+        query_results = retrieve_query_evidence(user_query, top_k=3)
+        if query_results:
+            for qev in query_results:
+                qc = qev.chunk
+                st.markdown(f"**{qc.source_id} — {qc.document_title}** | *{qc.section_heading}* (Relevance: `{qev.relevance_tier}`, Score: `{qev.score:.3f}`)")
+                st.info(f"**Citation:** `{qev.citation}`\n\n{qc.content[:350]}...")
+        else:
+            st.warning("No matching policy evidence found above threshold. Response will state 'Insufficient Evidence'.")
 
 
 # ---------------------------------------------------------
@@ -319,16 +352,16 @@ if st.button(
     type="primary"
 ):
 
-    case_prompt = build_case_prompt(
+    case_prompt = rag_pipeline.build_case_prompt(
         member=member,
-        policies=policies,
-        repayment=repayment
+        repayment=repayment,
+        evidence=case_evidence
     )
 
     try:
 
         with st.spinner(
-            "Preparing case..."
+            "Preparing case using retrieved policy evidence..."
         ):
 
             ai_response = prepare_case_with_ai(
@@ -346,7 +379,7 @@ if st.button(
 
 
         # -------------------------------------------------
-        # SHOW RESULT
+        # SHOW RESULT & SOURCE CITATIONS
         # -------------------------------------------------
 
         st.header(
@@ -356,6 +389,19 @@ if st.button(
         st.markdown(
             ai_response
         )
+
+        st.subheader("📚 Supporting Document & Source References")
+        evidence_data = []
+        for ev in case_evidence:
+            evidence_data.append({
+                "Source ID": ev.chunk.source_id,
+                "Document Title": ev.chunk.document_title,
+                "Version": ev.chunk.version,
+                "Section": ev.chunk.section_heading,
+                "Relevance": ev.relevance_tier,
+                "Match Score": f"{ev.score:.3f}"
+            })
+        st.table(evidence_data)
 
 
         # -------------------------------------------------
