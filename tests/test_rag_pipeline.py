@@ -3,8 +3,13 @@ Automated Test Suite for Grounded RAG Pipeline.
 Verifies ingestion of all 20 RAG policy documents, semantic retrieval precision,
 citation formatting, and insufficient evidence handling.
 """
-import pytest
+import sys
 from pathlib import Path
+import pytest
+
+repo_root = Path(__file__).resolve().parents[1]
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
 
 from src.rag.ingestion import PolicyIngestion, PolicyChunk
 from src.rag.retriever import PolicyRetriever, RetrievedEvidence
