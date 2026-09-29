@@ -2,9 +2,8 @@ Tool Authorization and Failure-Handling Test Plan
 1. Introduction
 The SACCO Member-Case Preparation Agent uses explicit tools to access application information and perform controlled actions. Since tools can interact with application data, the system must not rely on the foundation model to enforce security or authorization rules.
 Authorization and failure handling are therefore implemented at the application/orchestration layer. Before a tool is executed, the system verifies the requesting user's identity, role, permissions, required parameters, and the requested operation. The tool result is also validated before it is passed back to the foundation model.
-The two tools considered for testing are:
-    • Member Case Data Retrieval Tool; retrieves authorized member loan case information.
-    • Case Draft Creation Tool; creates a low risk draft case record for later staff review.
+The tool considered for testing is:
+    • Retrieve_member_record; retrieves authorized member loan case information.
 The agent is not authorized to approve or reject loans, perform credit scoring, disburse funds, modify member accounts or execute financial transactions.
 2. Authorization Model
 The authorization model ensures that a tool call is allowed only when the requesting user has permission to perform the requested operation.
