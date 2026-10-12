@@ -1,0 +1,122 @@
+{
+  "CASE-2026-0002": {
+    "case_id": "CASE-2026-0002",
+    "member_id": "SACCO-M-002",
+    "policy_versions_used": {
+      "SACCO-CREDIT-001": "v3.0",
+      "SACCO-AML-001": "v3.0"
+    },
+    "policy_evidence": [
+      {
+        "topic": "eligibility",
+        "source_id": "SACCO-CREDIT-001",
+        "doc": "Credit Policy and Lending Procedures Manual (v3.0)",
+        "section": "3. General Borrower Eligibility Criteria",
+        "text": "Must have been an active, registered member for a minimum of six (6) consecutive calendar months prior to the date of application."
+      },
+      {
+        "topic": "dsr",
+        "source_id": "SACCO-CREDIT-001",
+        "doc": "Credit Policy and Lending Procedures Manual (v3.0)",
+        "section": "5. Repayment Capacity and Debt Service Ratio (DSR)",
+        "text": "Total monthly debt obligations must not exceed 50% of the applicant's verifiable net monthly income."
+      },
+      {
+        "topic": "kyc",
+        "source_id": "SACCO-AML-001",
+        "doc": "Anti-Money Laundering, CFT & KYC Compliance Policy (v3.0)",
+        "section": "2. Customer Due Diligence (CDD) and KYC Tiers",
+        "text": "Full legal name verified against National ID (NIN); physical address corroborated by LC1 Chairperson letter."
+      },
+      {
+        "topic": "guarantor",
+        "source_id": "SACCO-CREDIT-001",
+        "doc": "Credit Policy and Lending Procedures Manual (v3.0)",
+        "section": "6. Security and Guarantor Requirements",
+        "text": "Every loan facility must be secured to a minimum of 100% of the loan principal plus anticipated interest."
+      }
+    ],
+    "calculations_cache": {
+      "repayment_schedule": {
+        "inputs_hash": "d1a183f971f186aeab21f44b25252a2df0f27c5c355b56090a70814c3ca6295b",
+        "inputs": {
+          "principal": 4000000,
+          "annual_interest_rate": 18,
+          "term_months": 12
+        },
+        "result": {
+          "calculation_type": "repayment_schedule",
+          "result": {
+            "monthly_payment": 366720,
+            "total_interest": 400640,
+            "total_repayment": 4400640
+          },
+          "is_illustrative": true,
+          "calculation_successful": true
+        }
+      },
+      "debt_service_ratio": {
+        "inputs_hash": "dd7f6debb7444a4c3fecf74abe571727da8e3a72f9af7a9c065d146c919f72a1",
+        "inputs": {
+          "net_monthly_income": 1200000,
+          "existing_monthly_obligations": 150000,
+          "proposed_monthly_installment": 366720
+        },
+        "result": {
+          "calculation_type": "debt_service_ratio",
+          "result": {
+            "dsr_percentage": 43.1,
+            "within_policy_limit": true
+          },
+          "is_illustrative": true,
+          "calculation_successful": true
+        }
+      },
+      "savings_loan_limit": {
+        "inputs_hash": "f10cebaf1bc958f4b4f9e29dcafa75b877729918038fd6d0a87d5e17f3097c45",
+        "inputs": {
+          "savings_balance": 2800000,
+          "multiplier_rate": 3
+        },
+        "result": {
+          "calculation_type": "savings_loan_limit",
+          "result": {
+            "max_eligible_loan_amount": 8400000
+          },
+          "is_illustrative": true,
+          "calculation_successful": true
+        }
+      }
+    },
+    "checklist_status": {
+      "member_record_retrieved": true,
+      "policy_evidence_retrieved": true,
+      "calculations_completed": true,
+      "kyc_verified": true,
+      "has_arrears": false,
+      "guarantors_declared": true,
+      "missing_documents": []
+    },
+    "staff_comments": [
+      {
+        "officer_id": "LO-001",
+        "timestamp": "2026-10-12T20:00:00Z",
+        "note": "Member contacted via phone. Pledged to bring LC1 letter tomorrow 10am."
+      },
+      {
+        "officer_id": "LO-001",
+        "timestamp": "2026-10-12T20:00:00Z",
+        "note": "LC1 Chairperson letter received and verified by officer LO-001."
+      }
+    ],
+    "committee_decision": {
+      "decision": "REJECTED",
+      "decided_by": "Credit Committee (3-member quorum)",
+      "timestamp": "2026-10-12T19:36:07.516469",
+      "rationale": "External bureau liabilities exceed capacity."
+    },
+    "status": "COMMITTEE_REJECTED",
+    "created_at": "2026-10-12T19:36:07.503614",
+    "last_updated_at": "2026-10-12T19:36:07.516469"
+  }
+}
