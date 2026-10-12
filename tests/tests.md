@@ -63,3 +63,34 @@ python tests/test_tools_orchestration.py
 
 All 18 test cases executed and passed.
 
+---
+
+# Safe Persistent-Memory Test Documentation
+
+## Overview
+Automated tests for operational continuity and the three negative safety invariants are implemented in [test_persistent_memory.py](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/tests/test_persistent_memory.py).
+
+## Test Cases
+
+| Test Case | Category | Objective / Scenario | Expected Result | Status |
+|---|---|---|---|---|
+| `test_continuity_preserves_officer_comments` | Continuity | Resume case with earlier loan officer notes. | Previous notes restored verbatim into context. | **PASS** |
+| `test_continuity_reuses_valid_calculations` | Continuity | Reopen case with unchanged financial parameters. | Deterministic math reused from cache; 0 calculation tool calls. | **PASS** |
+| `test_continuity_recalculates_when_inputs_change` | Continuity | Member modifies requested loan amount. | Input hash mismatch detected; fresh calculation executed. | **PASS** |
+| `test_continuity_incremental_checklist_progression` | Continuity | Member submits missing KYC proof across sessions. | State advances from `DRAFT_INCOMPLETE` to `READY_FOR_REVIEW`. | **PASS** |
+| `test_safety_invariant_1_memory_cannot_silently_approve` | Invariant 1 | Agent attempts to persist `APPROVED` or call `approveLoan`. | Intercepted with `MemorySafetyViolation` & `FORBIDDEN_OPERATION`. | **PASS** |
+| `test_safety_invariant_2_stale_policy_forces_fresh_retrieval` | Invariant 2 | Stored memory references deprecated policy `v2.0`. | Version mismatch flagged; fresh RAG policy retrieval forced. | **PASS** |
+| `test_safety_invariant_3_cannot_override_committee_decision` | Invariant 3 | Case already has a human Credit Committee `REJECTED` verdict. | Agent halts immediately with `STOPPED_COMMITTEE_DECISION_FINAL`. | **PASS** |
+
+## Execution Command
+```powershell
+# Run the persistent memory test suite
+python -m pytest tests/test_persistent_memory.py -v
+
+# Run all test suites across the repository
+python -m pytest tests/ -v
+```
+
+All 7 persistent-memory test cases (and all 32 repository test cases) executed and passed.
+
+
