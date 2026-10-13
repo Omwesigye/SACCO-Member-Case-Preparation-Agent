@@ -1,0 +1,13 @@
+Week 6 Progress Report: Memory, State and Interoperability
+
+Project: SACCO Member-Case Preparation Agent
+Reporting period: 5–9 October 2026
+Weekly focus: Making workflow state explicit, retaining justified memory, and connecting capabilities through clear interfaces.
+
+During Week 6, the project focused on making the SACCO loan-case preparation workflow more structured, traceable, and reusable. A workflow state model was defined to show how a case moves from initiation to loan-officer review. The states include Case Received, Context Collection, Validation, Calculation, Assessment, Drafting, Awaiting Loan Officer Review, Handoff Required, Failed Safe, and Completed. Each state records the information available, the actions performed, and the conditions required before the case can move forward. The model ensures that the agent cannot skip validation, approve a loan, or continue after missing information or a failed policy check.
+
+A persistent-memory design was also prepared. The selected use case is case history and prior calculation results. The agent stores the case ID, member ID, loan product, policy version, repayment schedule, DSR result, savings-based limit, security or guarantor coverage, missing-document checklist, and loan-officer review notes. This allows the agent to resume a case without repeating completed work. Memory improves continuity but does not control critical decisions. The agent cannot use stored memory to approve a loan, override policy, or change a Credit Committee decision. Access is restricted to authorized loan officers, Credit Committee members, and auditors, and records are retained only for the period required by SACCO policy and audit requirements.
+
+The project also documented an MCP-style interface for the repayment calculator capability. The interface defines the capability purpose, input fields, output format, permitted users, validation rules, error responses, audit logging, and security boundary. The calculator accepts loan amount, interest rate, repayment period, repayment frequency, fees, and first repayment date, then returns a deterministic repayment schedule. The AI may request the calculation, but the orchestration layer validates the request and the calculator performs the arithmetic.
+
+The main achievement was a clearer separation between workflow state, justified memory, and external capability access. The main challenge was ensuring that stored case history does not become outdated or conflict with current policy. This was mitigated by storing policy version, effective date, calculation version, and case status with each memory record. Week 7 will focus on testing the complete workflow, improving validation, and preparing the final demonstration.
