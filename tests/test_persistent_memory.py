@@ -47,9 +47,7 @@ def loan_officer():
     return UserContext(user_id="LO-001", role="Loan Officer", is_authenticated=True)
 
 
-# ==============================================================================
 # Group 1: Operational Continuity Tests
-# ==============================================================================
 
 def test_continuity_preserves_officer_comments(temp_memory_store):
     """MEM-01: Verifies narrative loan officer notes persist across sessions."""

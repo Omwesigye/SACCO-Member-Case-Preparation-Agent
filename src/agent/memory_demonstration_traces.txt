@@ -1,4 +1,4 @@
-########## TURN 1: INITIAL INTAKE (INCOMPLETE KYC) ##########
+## TURN 1: INITIAL INTAKE (INCOMPLETE KYC) ##
 EXECUTION TRACE — member_id=SACCO-M-002 | case_id=CASE-2026-0002
 ============================================================
 
@@ -96,7 +96,7 @@ EXECUTION TRACE — member_id=SACCO-M-002 | case_id=CASE-2026-0002
 ============================================================
 
 Step 1: STOP
-  Observe       : {'status': 'STOPPED_COMMITTEE_DECISION_FINAL', 'reason': "Case 'CASE-2026-0002' already has a final Credit Committee decision (REJECTED on 2026-10-12T19:36:07.516469). Safety Invariant 3 Enforced: Agent persistent memory cannot modify or reopen a concluded case.", 'note': 'Not an approval or rejection decision.'}
+  Observe       : {'status': 'STOPPED_COMMITTEE_DECISION_FINAL', 'reason': "Case 'CASE-2026-0002' already has a final Credit Committee decision (REJECTED on 2026-10-15T12:37:01.161341). Safety Invariant 3 Enforced: Agent persistent memory cannot modify or reopen a concluded case.", 'note': 'Not an approval or rejection decision.'}
 
 Final status: STOPPED_COMMITTEE_DECISION_FINAL
 Calculations summary: 0 reused from memory, 0 computed freshly
