@@ -1,9 +1,9 @@
-# Demonstration Evidence & Run Guide
+# SACCO Agent Interactive Demonstration Guide and Outputs
 
-This directory houses the interactive application artifacts and demonstration guides for the **SACCO Member Case Preparation Agent**.
-
-Per the Week 8 capstone deliverables:
-> *"Working live presentation/demonstration showing problem, progression, successful workflow, evidence view, failure handling, and guardrails."*
+**Evidence Module:** Working Interactive Prototype, Baseline Demonstration Scenarios, and Verification Scripts  
+**Repository Location:** `/evidence/demo`  
+**Application Source Directory:** [`evidence/demo/sacco_baseline/`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline)  
+**Primary UI Script:** [`app.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/app.py)  
 
 ---
 
@@ -14,16 +14,35 @@ The baseline system is deployed and publicly accessible online:
 - **Streamlit Cloud URL:**  
   [https://sacco-member-case-preparation-agent-bzbryaduwvsuifpyzbu5fx.streamlit.app/](https://sacco-member-case-preparation-agent-bzbryaduwvsuifpyzbu5fx.streamlit.app/)
 
-The web application allows loan officers to:
-1. Select from 10 synthetic member profiles (`SACCO-M-001` through `SACCO-M-010`).
-2. Run automated policy retrieval against the 20 SACCO policy documents.
-3. Compute exact reducing-balance repayment schedules and debt ratios using deterministic Python functions.
-4. Synthesize a structured case brief with source citations.
-5. Review policy checks, affordability flags, and human handover actions before submission.
+The interactive demonstration prototype allows credit officers, auditors, and evaluators to interact with the SACCO Member-Case Preparation Agent through a Streamlit web interface. It combines live deterministic Python computation with retrieved policy evidence and foundation-model case brief synthesis.
 
 ---
 
-## 2. Running the Demo Locally
+## 2. Prototype Architecture & Workflow
+
+```mermaid
+flowchart LR
+    A["Loan Officer UI<br/>(Streamlit: app.py)"] --> B["Synthetic Data Loader<br/>(data/member_*.json)"]
+    A --> C["Deterministic Calculator<br/>(calculator.py)"]
+    A --> D["Grounded RAG Pipeline<br/>(policy_loader.py)"]
+    B --> E["Prompt Formulator<br/>(prompts.py)"]
+    C --> E
+    D --> E
+    E --> F["LLM Service<br/>(llm_service.py)"]
+    F --> G["Output Validator<br/>(validator.py)"]
+    G --> H["Audited Case Brief<br/>(Human Review Gate)"]
+```
+
+### Module Responsibilities:
+* [`app.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/app.py): Streamlit dashboard with parameter sliders, synthetic member selector, schedule viewer, and case brief viewer.
+* [`calculator.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/calculator.py): Deterministic implementation of equal monthly amortization (reducing balance), total interest, and Debt Service Ratio.
+* [`policy_loader.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/policy_loader.py): Ingestion and semantic retrieval across the 20 approved SACCO policy documents.
+* [`prompts.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/prompts.py): Bounded context assembler instructing the model to act strictly as a case preparer without approval powers.
+* [`validator.py`](file:///c:/Users/USER/OneDrive/Desktop/SACCO%20PROJECT/SACCO-Member-Case-Preparation-Agent/evidence/demo/sacco_baseline/validator.py): Post-generation safety filter scanning for unauthorized approval phrasing.
+
+---
+
+## 3. Running the Demo Locally
 
 ### Interactive Streamlit UI
 *Requires a valid `GEMINI_API_KEY` set in your `.env` file.*

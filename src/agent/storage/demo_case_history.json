@@ -112,11 +112,11 @@
     "committee_decision": {
       "decision": "REJECTED",
       "decided_by": "Credit Committee (3-member quorum)",
-      "timestamp": "2026-10-15T12:37:01.161341",
+      "timestamp": "2026-10-25T13:24:06.789630",
       "rationale": "External bureau liabilities exceed capacity."
     },
     "status": "COMMITTEE_REJECTED",
-    "created_at": "2026-10-15T12:37:01.145242",
-    "last_updated_at": "2026-10-15T12:37:01.161341"
+    "created_at": "2026-10-25T13:24:06.771631",
+    "last_updated_at": "2026-10-25T13:24:06.789630"
   }
 }

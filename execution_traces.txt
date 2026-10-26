@@ -1,0 +1,111 @@
+
+
+########## Scenario A -- complete, well-formed case ##########
+EXECUTION TRACE — member_id=SACCO-M-001 | case_id=CASE-2026-5944
+============================================================
+
+Step 1: Sense case memory & context
+  Sense/Context : Preparing case 'CASE-2026-5944' for member 'SACCO-M-001'. Prior memory loaded: 0 cached calculations, 0 staff comments.
+  Plan/Decide   : Retrieve current member record and compare against memory cache
+  Act/Tool      : retrieve_member_record(member_id)
+  Observe       : {'member_id': 'SACCO-M-001', 'full_name': 'Synthetic Member One', 'membership_months': 30, 'monthly_income': 1500000, 'monthly_savings': 300000, 'savings_balance': 4500000, 'existing_monthly_obligations': 250000, 'requested_loan': 6000000, 'requested_term_months': 12, 'annual_interest_rate': 18, 'kyc_status': 'verified', 'has_arrears': False, 'number_of_guarantors': 2, 'data_type': 'synthetic', 'record_found': True}
+
+Step 2: Retrieve policy evidence
+  Sense/Context : Policy cache empty or stale; fresh policy retrieval required to ensure compliance
+  Plan/Decide   : Call search_sacco_policy() for topics: ['eligibility', 'dsr', 'kyc', 'guarantor']
+  Act/Tool      : search_sacco_policy(topics)
+  Observe       : {'evidence_found': True, 'evidence': [{'topic': 'eligibility', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '3. General Borrower Eligibility Criteria', 'text': 'Must have been an active, registered member for a minimum of six (6) consecutive calendar months prior to the date of application.'}, {'topic': 'dsr', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '5. Repayment Capacity and Debt Service Ratio (DSR)', 'text': "Total monthly debt obligations must not exceed 50% of the applicant's verifiable net monthly income."}, {'topic': 'kyc', 'source_id': 'SACCO-AML-001', 'doc': 'Anti-Money Laundering, CFT & KYC Compliance Policy (v3.0)', 'section': '2. Customer Due Diligence (CDD) and KYC Tiers', 'text': 'Full legal name verified against National ID (NIN); physical address corroborated by LC1 Chairperson letter.'}, {'topic': 'guarantor', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '6. Security and Guarantor Requirements', 'text': 'Every loan facility must be secured to a minimum of 100% of the loan principal plus anticipated interest.'}]}
+
+Step 3: Evaluate required calculations
+  Sense/Context : Identified applicable calculations: ['repayment_schedule', 'debt_service_ratio', 'savings_loan_limit']. Checking persistent memory cache against current member parameters...
+  Plan/Decide   : Reuse unchanged calculations from memory; only compute if inputs changed or missing
+  Act/Tool      : evaluate_calculation_cache()
+  Observe       : {'calculations_available': ['repayment_schedule', 'debt_service_ratio', 'savings_loan_limit'], 'reused_from_cache': 0, 'newly_computed': 3}
+
+Step 4: Assess checklist & document completeness
+  Sense/Context : Current documentation status: KYC verified=True, Missing documents=[]
+  Plan/Decide   : Evaluate whether case meets criteria for draft review or requires further documentation
+  Act/Tool      : evaluate_checklist()
+  Observe       : {'member_record_retrieved': True, 'policy_evidence_retrieved': True, 'calculations_completed': True, 'kyc_verified': True, 'has_arrears': False, 'guarantors_declared': True, 'missing_documents': []}
+
+Step 5: Prepare draft case brief
+  Sense/Context : All required data, policy evidence, and calculations are present
+  Plan/Decide   : Assemble draft case pack for human officer review
+  Act/Tool      : create_case_pack_draft(...)
+  Observe       : {'case_pack_id': 'CASE-2026-0001', 'status': 'DRAFT_READY_FOR_HUMAN_REVIEW', 'requires_human_review': True, 'confirmation_message': 'Case pack for SACCO-M-001 assembled and saved for officer review.'}
+
+Step 6: STOP (safe hand-off)
+  Sense/Context : Case pack assembled and stored in persistent memory
+  Plan/Decide   : Hand off to human Loan Officer; strictly no automated lending decision
+  Observe       : {'status': 'READY_FOR_REVIEW', 'case_id': 'CASE-2026-5944', 'case_pack_id': 'CASE-2026-0001', 'note': 'Not an approval or rejection decision. Loan decision authority remains with humans.'}
+
+Final status: READY_FOR_REVIEW
+Calculations summary: 0 reused from memory, 3 computed freshly
+
+Audit Log (6 entries):
+  - [tool_execution] retrieve_member_record(inputs={'member_id': 'SACCO-M-001'}) -> {'member_id': 'SACCO-M-001', 'full_name': 'Synthetic Member One', 'membership_months': 30, 'monthly_income': 1500000, 'monthly_savings': 300000, 'savings_balance': 4500000, 'existing_monthly_obligations': 250000, 'requested_loan': 6000000, 'requested_term_months': 12, 'annual_interest_rate': 18, 'kyc_status': 'verified', 'has_arrears': False, 'number_of_guarantors': 2, 'data_type': 'synthetic', 'record_found': True}
+  - [tool_execution] search_sacco_policy(inputs={'topics': ['eligibility', 'dsr', 'kyc', 'guarantor']}) -> {'evidence_found': True, 'evidence': [{'topic': 'eligibility', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '3. General Borrower Eligibility Criteria', 'text': 'Must have been an active, registered member for a minimum of six (6) consecutive calendar months prior to the date of application.'}, {'topic': 'dsr', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '5. Repayment Capacity and Debt Service Ratio (DSR)', 'text': "Total monthly debt obligations must not exceed 50% of the applicant's verifiable net monthly income."}, {'topic': 'kyc', 'source_id': 'SACCO-AML-001', 'doc': 'Anti-Money Laundering, CFT & KYC Compliance Policy (v3.0)', 'section': '2. Customer Due Diligence (CDD) and KYC Tiers', 'text': 'Full legal name verified against National ID (NIN); physical address corroborated by LC1 Chairperson letter.'}, {'topic': 'guarantor', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '6. Security and Guarantor Requirements', 'text': 'Every loan facility must be secured to a minimum of 100% of the loan principal plus anticipated interest.'}]}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'repayment_schedule', 'principal': 6000000, 'annual_interest_rate': 18, 'term_months': 12}) -> {'calculation_type': 'repayment_schedule', 'result': {'monthly_payment': 550080, 'total_interest': 600960, 'total_repayment': 6600960}, 'is_illustrative': True, 'calculation_successful': True}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'debt_service_ratio', 'net_monthly_income': 1500000, 'existing_monthly_obligations': 250000, 'proposed_monthly_installment': 550080}) -> {'calculation_type': 'debt_service_ratio', 'result': {'dsr_percentage': 53.3, 'within_policy_limit': False}, 'is_illustrative': True, 'calculation_successful': True}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'savings_loan_limit', 'savings_balance': 4500000, 'multiplier_rate': 3}) -> {'calculation_type': 'savings_loan_limit', 'result': {'max_eligible_loan_amount': 13500000}, 'is_illustrative': True, 'calculation_successful': True}
+  - [tool_execution] create_case_pack_draft(inputs={'member_id': 'SACCO-M-001', 'case_id': 'CASE-2026-5944'}) -> {'case_pack_id': 'CASE-2026-0001', 'status': 'DRAFT_READY_FOR_HUMAN_REVIEW', 'requires_human_review': True, 'confirmation_message': 'Case pack for SACCO-M-001 assembled and saved for officer review.'}
+
+########## Scenario B -- member not found (failure case) ##########
+EXECUTION TRACE — member_id=SACCO-M-999 | case_id=CASE-2026-2025
+============================================================
+
+Step 1: Sense case memory & context
+  Sense/Context : Preparing case 'CASE-2026-2025' for member 'SACCO-M-999'. Prior memory loaded: 0 cached calculations, 0 staff comments.
+  Plan/Decide   : Retrieve current member record and compare against memory cache
+  Act/Tool      : retrieve_member_record(member_id)
+  Observe       : {'record_found': False, 'error': 'member_not_found'}
+
+Step 2: STOP
+  Observe       : {'status': 'STOPPED_INCOMPLETE', 'reason': 'Member record not found or invalid (member_not_found). Agent stops rather than guessing member data; hand off to staff.', 'note': 'Not an approval or rejection decision.'}
+
+Final status: STOPPED_INCOMPLETE
+Calculations summary: 0 reused from memory, 0 computed freshly
+
+Audit Log (1 entries):
+  - [tool_execution] retrieve_member_record(inputs={'member_id': 'SACCO-M-999'}) -> {'record_found': False, 'error': 'member_not_found'}
+
+########## Scenario C -- member found, KYC missing (pending items, still completes) ##########
+EXECUTION TRACE — member_id=SACCO-M-002 | case_id=CASE-2026-4373
+============================================================
+
+Step 1: Sense case memory & context
+  Sense/Context : Preparing case 'CASE-2026-4373' for member 'SACCO-M-002'. Prior memory loaded: 0 cached calculations, 0 staff comments.
+  Plan/Decide   : Retrieve current member record and compare against memory cache
+  Act/Tool      : retrieve_member_record(member_id)
+  Observe       : {'member_id': 'SACCO-M-002', 'full_name': 'Synthetic Member Two', 'membership_months': 18, 'monthly_income': 1200000, 'monthly_savings': 200000, 'savings_balance': 2800000, 'existing_monthly_obligations': 150000, 'requested_loan': 4000000, 'requested_term_months': 12, 'annual_interest_rate': 18, 'kyc_status': 'missing', 'has_arrears': False, 'number_of_guarantors': 2, 'data_type': 'synthetic', 'record_found': True}
+
+Step 2: Retrieve policy evidence
+  Sense/Context : Policy cache empty or stale; fresh policy retrieval required to ensure compliance
+  Plan/Decide   : Call search_sacco_policy() for topics: ['eligibility', 'dsr', 'kyc', 'guarantor']
+  Act/Tool      : search_sacco_policy(topics)
+  Observe       : {'evidence_found': True, 'evidence': [{'topic': 'eligibility', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '3. General Borrower Eligibility Criteria', 'text': 'Must have been an active, registered member for a minimum of six (6) consecutive calendar months prior to the date of application.'}, {'topic': 'dsr', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '5. Repayment Capacity and Debt Service Ratio (DSR)', 'text': "Total monthly debt obligations must not exceed 50% of the applicant's verifiable net monthly income."}, {'topic': 'kyc', 'source_id': 'SACCO-AML-001', 'doc': 'Anti-Money Laundering, CFT & KYC Compliance Policy (v3.0)', 'section': '2. Customer Due Diligence (CDD) and KYC Tiers', 'text': 'Full legal name verified against National ID (NIN); physical address corroborated by LC1 Chairperson letter.'}, {'topic': 'guarantor', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '6. Security and Guarantor Requirements', 'text': 'Every loan facility must be secured to a minimum of 100% of the loan principal plus anticipated interest.'}]}
+
+Step 3: Evaluate required calculations
+  Sense/Context : Identified applicable calculations: ['repayment_schedule', 'debt_service_ratio', 'savings_loan_limit']. Checking persistent memory cache against current member parameters...
+  Plan/Decide   : Reuse unchanged calculations from memory; only compute if inputs changed or missing
+  Act/Tool      : evaluate_calculation_cache()
+  Observe       : {'calculations_available': ['repayment_schedule', 'debt_service_ratio', 'savings_loan_limit'], 'reused_from_cache': 0, 'newly_computed': 3}
+
+Step 4: Assess checklist & document completeness
+  Sense/Context : Current documentation status: KYC verified=False, Missing documents=['National ID (NIN) verification & LC1 Chairperson letter']
+  Plan/Decide   : Evaluate whether case meets criteria for draft review or requires further documentation
+  Act/Tool      : evaluate_checklist()
+  Observe       : {'member_record_retrieved': True, 'policy_evidence_retrieved': True, 'calculations_completed': True, 'kyc_verified': False, 'has_arrears': False, 'guarantors_declared': True, 'missing_documents': ['National ID (NIN) verification & LC1 Chairperson letter']}
+
+Step 5: STOP
+  Observe       : {'status': 'STOPPED_INCOMPLETE', 'reason': "Case saved to persistent memory as DRAFT_INCOMPLETE. Missing requirements: ['National ID (NIN) verification & LC1 Chairperson letter']. Staff comments preserved; ready to resume once documents are submitted.", 'note': 'Not an approval or rejection decision.'}
+
+Final status: STOPPED_INCOMPLETE
+Calculations summary: 0 reused from memory, 3 computed freshly
+
+Audit Log (5 entries):
+  - [tool_execution] retrieve_member_record(inputs={'member_id': 'SACCO-M-002'}) -> {'member_id': 'SACCO-M-002', 'full_name': 'Synthetic Member Two', 'membership_months': 18, 'monthly_income': 1200000, 'monthly_savings': 200000, 'savings_balance': 2800000, 'existing_monthly_obligations': 150000, 'requested_loan': 4000000, 'requested_term_months': 12, 'annual_interest_rate': 18, 'kyc_status': 'missing', 'has_arrears': False, 'number_of_guarantors': 2, 'data_type': 'synthetic', 'record_found': True}
+  - [tool_execution] search_sacco_policy(inputs={'topics': ['eligibility', 'dsr', 'kyc', 'guarantor']}) -> {'evidence_found': True, 'evidence': [{'topic': 'eligibility', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '3. General Borrower Eligibility Criteria', 'text': 'Must have been an active, registered member for a minimum of six (6) consecutive calendar months prior to the date of application.'}, {'topic': 'dsr', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '5. Repayment Capacity and Debt Service Ratio (DSR)', 'text': "Total monthly debt obligations must not exceed 50% of the applicant's verifiable net monthly income."}, {'topic': 'kyc', 'source_id': 'SACCO-AML-001', 'doc': 'Anti-Money Laundering, CFT & KYC Compliance Policy (v3.0)', 'section': '2. Customer Due Diligence (CDD) and KYC Tiers', 'text': 'Full legal name verified against National ID (NIN); physical address corroborated by LC1 Chairperson letter.'}, {'topic': 'guarantor', 'source_id': 'SACCO-CREDIT-001', 'doc': 'Credit Policy and Lending Procedures Manual (v3.0)', 'section': '6. Security and Guarantor Requirements', 'text': 'Every loan facility must be secured to a minimum of 100% of the loan principal plus anticipated interest.'}]}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'repayment_schedule', 'principal': 4000000, 'annual_interest_rate': 18, 'term_months': 12}) -> {'calculation_type': 'repayment_schedule', 'result': {'monthly_payment': 366720, 'total_interest': 400640, 'total_repayment': 4400640}, 'is_illustrative': True, 'calculation_successful': True}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'debt_service_ratio', 'net_monthly_income': 1200000, 'existing_monthly_obligations': 150000, 'proposed_monthly_installment': 366720}) -> {'calculation_type': 'debt_service_ratio', 'result': {'dsr_percentage': 43.1, 'within_policy_limit': True}, 'is_illustrative': True, 'calculation_successful': True}
+  - [tool_execution] calculate_illustrative_schedule(inputs={'calculation_type': 'savings_loan_limit', 'savings_balance': 2800000, 'multiplier_rate': 3}) -> {'calculation_type': 'savings_loan_limit', 'result': {'max_eligible_loan_amount': 8400000}, 'is_illustrative': True, 'calculation_successful': True}
