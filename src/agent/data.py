@@ -1,9 +1,12 @@
 """
-Synthetic data store for the SACCO bounded agent workflow demo.
-Mirrors the member record shape already used elsewhere in the project
-(member_001.json etc.) and a small policy snippet set keyed by topic,
-standing in for the real RAG policy corpus.
+Synthetic data store for the SACCO bounded agent workflow.
+Mirrors the member record shape used across the project and loads
+all synthetic profiles (SACCO-M-001 through SACCO-M-010) while
+providing policy snippets for bounded agent execution.
 """
+
+from pathlib import Path
+import json
 
 MEMBERS = {
     "SACCO-M-001": {
@@ -38,14 +41,22 @@ MEMBERS = {
         "number_of_guarantors": 2,
         "data_type": "synthetic",
     },
-    # Note: SACCO-M-999 is intentionally NOT in this dict.
-    # Looking it up is used to trigger the "member not found" stop condition.
 }
 
-# Minimal stand-in for the real 20-document RAG corpus: a handful of
-# topic-tagged policy snippets with the same citation fields the real
-# pipeline uses (Source ID / Doc / Section), so retrieval behaves the
-# same way structurally.
+# Automatically load any additional synthetic member profiles from evidence/demo/sacco_baseline/data
+data_dir = Path(__file__).resolve().parents[2] / "evidence" / "demo" / "sacco_baseline" / "data"
+if data_dir.exists():
+    for f in sorted(data_dir.glob("*.json")):
+        try:
+            with open(f, "r", encoding="utf-8") as jf:
+                rec = json.load(jf)
+                mid = rec.get("member_id")
+                if mid and mid not in MEMBERS:
+                    MEMBERS[mid] = rec
+        except Exception:
+            pass
+
+# Policy snippets keyed by topic with provenance citations
 POLICY_SNIPPETS = [
     {
         "topic": "eligibility",

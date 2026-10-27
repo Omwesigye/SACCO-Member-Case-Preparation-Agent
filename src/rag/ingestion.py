@@ -5,7 +5,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 import re
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 @dataclass

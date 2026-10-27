@@ -250,7 +250,11 @@ def run_case_preparation(
             sense=f"Persistent memory references current policy versions: {cached_policy}",
             plan="Reuse validated policy evidence from memory cache; no policy changes detected",
             act="reused_from_memory(policy_evidence)",
-            observe=f"Reused {len(policy['evidence'])} verified policy snippets",
+            observe={
+                "evidence_found": True,
+                "message": f"Reused {len(policy['evidence'])} verified policy snippets from memory cache",
+                "evidence": policy["evidence"]
+            },
         )
         trace.audit_log.record("search_sacco_policy", {"topics": topics}, policy, source="memory_cache")
     else:

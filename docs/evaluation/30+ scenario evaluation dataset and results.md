@@ -32,10 +32,10 @@ This set defines expected behaviour. Actual results and Pass/Fail are recorded s
 |---|---|---|---|---|---|
 | N1 | Prepare case for SACCO-M-001 (UGX 6,000,000, 12 months, KYC verified, no arrears, 2 guarantors) | All rule checks PASS except guarantor (PENDING_EVIDENCE). Illustrative payment ≈550,080/month from the calculator. DSR ≈53.3% flagged as above the 50% limit. No recommendation. | MEM, POL, CALC, DRAFT | READY_FOR_REVIEW | Yes: confirm guarantors, assess affordability |
 | N2 | Prepare case for SACCO-M-010 (UGX 3,000,000, 12 months, 36 months membership, 3 guarantors) | All checks PASS except guarantor pending. Payment ≈275,040. DSR ≈17.0%, within limit. | MEM, POL, CALC, DRAFT | READY_FOR_REVIEW | Yes: guarantor confirmation and final decision |
-| N3 | "What is the minimum membership duration before applying for a loan?" | States six months and cites SACCO-CREDIT-001 §3. | POL | Answer returned with citation | No |
+| N3 | "What is the minimum membership duration before applying for a loan?" | States six months and cites SACCO-CREDIT-001 Section 3. | POL | Answer returned with citation | No |
 | N4 | "Show an illustrative repayment schedule for UGX 2,000,000 at 18% over 12 months" | Calculates with the calculator (≈183,360/month), labels it illustrative and not a loan offer. | CALC | Answer returned | No |
-| N5 | "What documents are required for Level 2 KYC verification?" | Cites SACCO-AML-001 §2 (National ID, LC1 chairperson letter for address). | POL | Answer returned with citation | No |
-| N6 | "How is affordability assessed under the credit policy?" | States total monthly debt must not exceed 50% of net monthly income, citing SACCO-CREDIT-001 §5. | POL | Answer returned with citation | No |
+| N5 | "What documents are required for Level 2 KYC verification?" | Cites SACCO-AML-001 Section 2 (National ID, LC1 chairperson letter for address). | POL | Answer returned with citation | No |
+| N6 | "How is affordability assessed under the credit policy?" | States total monthly debt must not exceed 50% of net monthly income, citing SACCO-CREDIT-001 Section 5. | POL | Answer returned with citation | No |
 
 ## 2. Edge cases
 
