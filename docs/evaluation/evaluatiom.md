@@ -29,24 +29,24 @@ flowchart TD
 
 ---
 
-## 2. Evaluation Datasets and Result Summaries
+## 2. Evaluation Artifacts Directory
 
-| Document | Test Count | Key Focus Areas | Summary Result |
-| :--- | :---: | :--- | :--- |
-| [**RAG-evaluation-table.md**](file:///d:/Sacco-Agent/docs/evaluation/RAG-evaluation-table.md) | 15 Queries | Retrieval precision, clause grounding, insufficient evidence refusal | **11 Pass / 4 Fail** (Identified 4 weak-match near-misses on unanswerable queries F-01) |
-| [**prompt-evaluation-table.md**](file:///d:/Sacco-Agent/docs/evaluation/prompt-evaluation-table.md) | 10 Profiles | Full case brief generation, output validation, human review handoff | **9 Full Pass / 1 Partial Pass** (Guarantor status granularity F-03; validator false-positives F-02) |
-| [**30+ scenario evaluation dataset and results.md**](file:///d:/Sacco-Agent/docs/evaluation/30+%20scenario%20evaluation%20dataset%20and%20results.md) | 50 Scenarios | Normal (6), Edge (12), Incorrect Data (7), Adversarial (9), Tool Failure (8), Unauthorized (8) | **100% of safety invariants held**; 0 unauthorized approvals permitted |
-| [**failure-catalogue.md**](file:///d:/Sacco-Agent/docs/evaluation/failure-catalogue.md) | 8 Items | Observed failures (F-01 to F-03), Verified safeguards (F-04 to F-06, F-08), Open research (F-07) | Structured root-cause analysis with concrete next steps |
-
----
-
-## 3. Core Safety and Operational Findings
-
-1. **Zero Financial Hallucination:** In 100% of tested runs, loan repayments, Debt Service Ratios (DSR), and savings multipliers were calculated by explicit Python functions in `repayment_calculator_tool.py`, never hallucinated in free text by the foundation model.
-2. **Deterministic Human Approval Gate:** No test prompt or adversarial input could induce the agent to execute a loan approval, fund disbursement, or account balance modification.
-3. **Retrieval Threshold Gap (F-01):** Evaluation proved that while completely unrelated queries (e.g. quantum physics) return `INSUFFICIENT_EVIDENCE`, near-miss queries (e.g. loan transfers between branches or early repayment rebates) can return low-relevance clauses unless a minimum cosine/BM25 relevance threshold ($\ge 0.35$) is enforced.
-4. **Multi-Session Continuity:** Tests in `test_persistent_memory.py` verified that returning members with incomplete KYC retain previous notes and reuse valid mathematical schedules without redundant computation.
+| Artifact | File Link | Scope | Key Metrics / Findings |
+|---|---|---|---|
+| **Prompt Evaluation Table** | [prompt-evaluation-table.md](prompt-evaluation-table.md) | 10 baseline synthetic member profiles | Evaluates policy rule checking, prompt follow-through, and boundary enforcement. 9/10 passed cleanly; identified `EXCEPTION_REQUIRED` for loan arrears. |
+| **RAG Grounding & Refusal Table** | [RAG-evaluation-table.md](RAG-evaluation-table.md) | 15 targeted policy questions | 5 answerable, 5 partially answerable, 5 unanswerable. Measures precision of citations and safe refusal behavior on out-of-corpus topics. |
+| **50-Scenario Evaluation Dataset** | [30+ scenario evaluation dataset and results.md](30+%20scenario%20evaluation%20dataset%20and%20results.md) | 50 comprehensive scenarios | Covers Normal (6), Edge (12), Incorrect Member Info (7), Adversarial Prompts (9), Tool Failures (8), and Unauthorized Actions (8). |
+| **Failure Catalogue & Remediation** | [failure-catalogue.md](failure-catalogue.md) | 8 failure and control cases | Documents 3 observed weaknesses (F-01 to F-03), 4 verified safeguards (F-04 to F-06, F-08), and 1 pending test (F-07). |
 
 ---
 
-For consolidated artifact proofs, traces, and code cross-references, refer to the master [Final Evidence Pack](file:///d:/Sacco-Agent/evidence/final-evidence-pack.md).
+## 3. Automated Regression Test Suite
+
+All safety guardrails, orchestration layers, deterministic calculators, and persistent memory features are covered by **44 automated pytest cases** in the [tests/](../../tests/) directory:
+
+- `test_guardrails.py` (12 tests)
+- `test_persistent_memory.py` (7 tests)
+- `test_rag_pipeline.py` (7 tests)
+- `test_tools_orchestration.py` (18 tests)
+
+**Result:** 44/44 passed (100% pass rate).
